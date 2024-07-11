@@ -49,16 +49,44 @@ class Bank {
         this.Name = Name;
         this.Balance = Balance;
     }
-}
+    numformatter(amt1) {
+        const formatter = new Intl.NumberFormat("en-IN", {
+            style: "currency",
+            currency: "INR",
+        });
+        const formattedNumber = formatter.format(amt1);
+        return formattedNumber
+    }
+    displayBalance() {
+        return `${this.Name} you have ${this.numformatter(this.Balance)}`;
+    }
+    //Withdraw Balance 
+    //withdraw if amt is less than balance 
+    //Display if amt is greater than balance 
+    //should reflect in displayBalance 
+    withdrawBal(amt) {
+        return this.Balance > amt ? (this.Balance -= amt, `Successfully withdrawed ${this.numformatter(amt)}`) : "Sorry Your Balance is lower";
+    }
 
+    depositeBal(amt) {
+        this.Balance += amt;
+        return `Successfully Deposited ${this.numformatter(amt)}`
+    }
+}
 
 const Nikhil = new Bank(1299, "Nikhil Raj Ganta", 1000);
 const Phani = new Bank(1305, "Phanidhar", 1000);
-const Guna = new Bank(1304, "Guna", 1000);
+const Guna = new Bank(1304, "Guna", 10_00_000);
 
 console.log(Nikhil);
 console.log(Phani);
 console.log(Guna);
+
+console.log(Guna.displayBalance())
+console.log(Guna.withdrawBal(1000))
+console.log(Guna.displayBalance())
+console.log(Guna.depositeBal(10))
+console.log(Guna.displayBalance())
 
 
 
