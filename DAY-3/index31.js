@@ -60,10 +60,21 @@ console.log(getMovieDetails(6)); // Should print: Movie not found
 
 // Q11. Write a function that filters out movies released before a certain year and calculates the average rating of the remaining movies (Rating must be rounded)
 
+function getAverageRatingAfterYear(year) {
+    const moviesAfterYear = movies.filter(movie => movie.year >= year);
+    if (moviesAfterYear.length === 0) {
+        return "No movies after the specified year";
+    }
+    const totalRating = moviesAfterYear.reduce((sum, movie) => {
+        const averageRating = Math.round(movie.ratings.reduce((total, rating) => total + rating, 0) / movie.ratings.length);
+        return sum + averageRating;
+    }, 0);
+    const averageRating = (totalRating / moviesAfterYear.length).toFixed(2);
+    return averageRating;
+}
 
-// console.log(getAverageRatingAfterYear(2016)); // Should print: 8.83 (average rating of Arjun Reddy, Mahanati, and Jersey)
-// console.log(getAverageRatingAfterYear(2020)); // Should print: No movies after the specified year
-
+console.log(getAverageRatingAfterYear(2016)); // Should print: 8.83
+console.log(getAverageRatingAfterYear(2020)); // Should print: No movies after the specified year
 
 // Q12: Write a function that checks if all movies of a certain genre have ratings above a certain value
 function allRatingsAboveForGenre(minRating, genre) {
@@ -78,15 +89,24 @@ console.log(allRatingsAboveForGenre(8, "Biography")); // Should print: No, not a
 //Q13: Write a function that returns a string with each movie's title and its ratings joined by commas
 
 function getTitlesAndRatings() {
-    return
+    return movies.map(movie => {
+        const ratings = movie.ratings.join(", ");
+        return `${movie.title}: ${ratings}`;
+    }).join(" | ");
 }
+
 console.log(getTitlesAndRatings()); // Should print: Baahubali: 8, 9, 10 | Arjun Reddy: 9, 8, 9 | Mahanati: 10, 9, 8 | Eega: 7, 8, 9 | Jersey: 9, 9, 8
 
 // Q14: Write a function that returns a single array containing all ratings of all movies
 
+function getTitlesAndRatings() {
+    return movies.map(movie => {
+        const ratings = movie.ratings.join(", ");
+        return `${movie.title}: ${ratings}`;
+    }).join(" | ");
+}
 
-console.log(getAllRatings()); // Should print: [8, 9, 10, 9, 8, 9, 10, 9, 8, 7, 8, 9, 9, 9, 8]
-
+console.log(getTitlesAndRatings()); // Should print: Baahubali: 8, 9, 10 | Arjun Reddy: 9, 8, 9 | Mahanati: 10, 9, 8 | Eega: 7, 8, 9 | Jersey: 9, 9, 8
 
 //Q15 : Write a function that returns an array of titles of movies that have ratings above a 
 // certain threshold in any rating
@@ -100,14 +120,31 @@ console.log(getAllRatings());
 
 // Q16: Write a function that returns an array of movie titles sorted by their average ratings in descending order
 
+function getTitlesSortedByAverageRating() {
+    return movies.map(movie => {
+        const averageRating = Math.round(movie.ratings.reduce((total, rating) => total + rating, 0) / movie.ratings.length);
+        return { title: movie.title, averageRating };
+    })
+        .sort((a, b) => b.averageRating - a.averageRating)
+        .map(movie => movie.title);
+}
 
 console.log(getTitlesSortedByAverageRating()); // Should print: ["Baahubali", "Arjun Reddy", "Jersey", "Mahanati", "Eega"]
 
 // Q17: Write a function that finds the movie with the highest average rating and returns its title
 
 
-console.log(getMovieWithHighestAverageRating()); // Should print: Baahubali
+function getMovieWithHighestAverageRating() {
+    return movies.reduce((highestRatedMovie, movie) => {
+        const averageRating = Math.round(movie.ratings.reduce((total, rating) => total + rating, 0) / movie.ratings.length);
+        if (averageRating > Math.round(highestRatedMovie.averageRating)) {
+            return { title: movie.title, averageRating };
+        }
+        return highestRatedMovie;
+    }, { title: '', averageRating: 0 }).title;
+}
 
+console.log(getMovieWithHighestAverageRating()); // Should print: Baahubali
 
 //Q18Write a function that returns an array of movie titles released after a certain year
 function getTitlesAfterYear(year1) {
@@ -132,8 +169,7 @@ function getMovieInfoByTitle(title) {
 
 // Q20: Write a function that returns an array of titles of movies that have at least one rating below a certain threshold
 function getTitlesWithLowRatings(ratingThreshold) {
-    return movies.filter(movie => movie.ratings.some(rating => rating < ratingThreshold))
-        .map(movie => movie.title);
+    return movies.filter(movie => movie.ratings.some(rating => rating < ratingThreshold)).map(movie => movie.title);
 }
 
 
@@ -150,7 +186,18 @@ console.log(getTotalRatingsByGenre("Drama")); // Should print: 3
 // Q22: Write a function that returns an array of movies where the average rating is above a certain value, including the average rating in the result
 
 
-console.log(getMoviesWithHighAverageRating(8.5)); // Should print: ["Baahubali has an average rating of 9.00", "Arjun Reddy has an average rating of 8.67", "Jersey has an av
+function getMoviesWithHighAverageRating(minAverageRating) {
+    return movies.filter(movie => {
+        const averageRating = Math.round(movie.ratings.reduce((total, rating) => total + rating, 0) / movie.ratings.length);
+        return averageRating >= minAverageRating;
+    }).map(movie => {
+        const averageRating = Math.round(movie.ratings.reduce((total, rating) => total + rating, 0) / movie.ratings.length);
+        return `${movie.title} has an average rating of ${averageRating}`;
+    });
+}
+
+console.log(getMoviesWithHighAverageRating(8.5));// Should print: ["Baahubali has an average rating of 9", "Arjun Reddy has an average rating of 8.67", "Jersey has an average rating of 8.67"]
+
 
 // Q23: Write a function that returns an array of movie titles directed by a specific director, sorted by year in ascending order
 
@@ -160,6 +207,19 @@ function getTitlesByDirectorSortedByYear(director1) {
 
 // Q24: Write a function that returns the average rating of movies released in a specific year
 
+function getAverageRatingByYear(year) {
+    const moviesInYear = movies.filter(movie => movie.year === year);
+    if (moviesInYear.length === 0) {
+        return "No movies released in the specified year";
+    }
+
+    const totalRating = moviesInYear.reduce((sum, movie) => {
+        const averageRating = Math.round(movie.ratings.reduce((total, rating) => total + rating, 0) / movie.ratings.length);
+        return sum + averageRating;
+    }, 0);
+
+    return (totalRating / moviesInYear.length).toFixed(2);
+}
 
 console.log(getAverageRatingByYear(2018)); // Should print: 9.00
 console.log(getAverageRatingByYear(2015)); // Should print: "No movies released in the specified year"
@@ -167,21 +227,51 @@ console.log(getAverageRatingByYear(2015)); // Should print: "No movies released 
 
 // Q25: Write a function that returns an array of objects with movie titles and their highest ratings
 
+function getMoviesWithHighestRatings() {
+    return movies.map(movie => {
+        const highestRating = Math.max(...movie.ratings);
+        return { title: movie.title, highestRating };
+    });
+}
+
 console.log(getMoviesWithHighestRatings()); // Should print: [{ title: "Baahubali", highestRating: 10 }, { title: "Arjun Reddy", highestRating: 9 }, { title: "Mahanati", highestRating: 10 }, { title: "Eega", highestRating: 9 }, { title: "Jersey", highestRating: 9 }]
 
-
 //Q26: Write a function that returns the director with the most movies directed
+function getDirectorWithMostMovies() {
+    const directorCounts = movies.reduce((counts, movie) => {
+        if (counts[movie.director]) {
+            counts[movie.director]++;
+        } else {
+            counts[movie.director] = 1;
+        }
+        return counts;
+    }, {});
 
-console.log(getDirectorWithMostMovies()); // Should print the director with the most movies
+    let directorWithMostMovies = '';
+    let maxMovies = 0;
+    for (const director in directorCounts) {
+        if (directorCounts[director] > maxMovies) {
+            directorWithMostMovies = director;
+            maxMovies = directorCounts[director];
+        }
+    }
+
+    return directorWithMostMovies;
+}
+
+console.log(getDirectorWithMostMovies()); // Should print: "S. S. Rajamouli"
 
 // Q27: Write a function that merges two arrays of movies into one using the spread operator
-function mergeMovies(p) {
 
+function mergeMovies(movies1, movies2) {
+    return [...movies1, ...movies2];
 }
-console.log(mergeMovies(movies, moreMovies)); // Should print: array with all 7 movies
 
+const allMovies = mergeMovies(movies, moreMovies);
+console.log(allMovies);
 
 // Q28: Write a function that accepts any number of movie objects and returns an array of their titles using the rest operator
+
 function getTitles(...movies) {
     return movies.map((x) => x.title)
 }
@@ -216,12 +306,22 @@ console.log(movies)
 
 // Q30: Write a function that returns the last N movie titles, using slice and spread operator with a default value for N
 
+function getLastNMovieTitles(n = 3) {
+    return [...movies].slice(-n).map(movie => movie.title);
+}
 console.log(getLastNMovieTitles()); // Should print the last 3 movie titles
 console.log(getLastNMovieTitles(2)); // Should print the last 2 movie titles
 
 
 // Q31: Write a function that accepts multiple movie IDs, fetches the titles, and returns a formatted string using the rest operator, nullish coalescing, and template literals Interesting
 
+function getMovieTitlesByIds(...ids) {
+    const selectedMovies = ids.map(id => {
+        const movie = movies.find(movie => movie.id === id);
+        return movie ? movie.title : 'Unknown Title';
+    });
+    return `Selected Movies: ${selectedMovies.join(', ')}`;
+}
 
 console.log(getMovieTitlesByIds(1, 3, 5)); // Should print: Selected Movies: Baahubali, Mahanati, Jersey
 console.log(getMovieTitlesByIds(1, 6));   // Should print: Selected Movies: Baahubali, Unknown Title
@@ -230,6 +330,13 @@ console.log(getMovieTitlesByIds(5, 1));  // Should print: Selected Movies: Jerse
 
 // Q32: Write a function that accepts any number of movies and returns a formatted string listing their titles and genres using the rest operator, nullish coalescing, and template literals Interesting
 
+function listMovies(...movieData) {
+    const movieList = movieData.map(movie => {
+        const { title, genre = 'Unknown Genre' } = movie || {};
+        return `${title} (${genre})`;
+    });
+    return movieList.join(', ');
+}
 
 console.log(listMovies(...movies)); // Should print: Baahubali (Action), Arjun Reddy (Drama), Mahanati (Biography), Eega (Fantasy), Jersey (Sports)
 console.log(listMovies(movies[0], movies[1], movie[111])); // Should print: Baahubali (Action), Arjun Reddy (Drama), Unknown Title (Unknown Genre)
@@ -250,19 +357,94 @@ console.log(getTotalRatingsForDirectors()); // Should print: { "S. S. Rajamouli"
 
 
 // Q34: Write a function that returns an array of genres sorted by the total number of ratings received by movies in that genre Challenging
+
+function getGenresSortedByTotalRatings() {
+    const genres = [];
+    movies.forEach(movie => {
+        if (!genres.includes(movie.genre)) {
+            genres.push(movie.genre);
+        }
+    });
+
+    const genreRatings = genres.map(genre => {
+        const totalRatings = movies.filter(movie => movie.genre === genre).reduce((acc, current) => acc + current.ratings.reduce((a, b) => a + b, 0), 0);
+        return { genre, totalRatings };
+    });
+
+    genreRatings.sort((a, b) => b.totalRatings - a.totalRatings);
+
+    return genreRatings.map(genre => genre.genre);
+}
+
 console.log(getGenresSortedByTotalRatings()); // Should print genres sorted by total ratings
 
 
 
 // Q35: Write a function that returns an array of movie titles directed by directors who have directed more than one movie Challenging
+
+function getTitlesByDirectorsWithMultipleMovies() {
+    const directorMovies = {};
+
+    movies.forEach(movie => {
+        if (directorMovies[movie.director]) {
+            directorMovies[movie.director].push(movie);
+        } else {
+            directorMovies[movie.director] = [movie];
+        }
+    });
+
+    const multipleMovieDirectors = Object.keys(directorMovies).filter(director => directorMovies[director].length > 1);
+
+    const titles = multipleMovieDirectors.flatMap(director => directorMovies[director].map(movie => movie.title));
+
+    return titles;
+}
+
 console.log(getTitlesByDirectorsWithMultipleMovies()); // Should print: ["Baahubali", "Eega"]
 
 
 // Q36: Write a function that calculates the total number of ratings for each genre and returns the genre with the highest total ratings Challenging
+
+function getGenreWithHighestTotalRatings() {
+    const genreRatings = {};
+
+    movies.forEach(movie => {
+        if (!genreRatings[movie.genre]) {
+            genreRatings[movie.genre] = 0;
+        }
+        genreRatings[movie.genre] += movie.ratings.reduce((a, b) => a + b, 0);
+    });
+
+    const highestRatedGenre = Object.keys(genreRatings).reduce((a, b) => genreRatings[a] > genreRatings[b] ? a : b);
+
+    return highestRatedGenre;
+}
+
 console.log(getGenreWithHighestTotalRatings()); // Should print the genre with the highest total ratings
 
 
 // Q37: Write a function that returns an array of directors who have directed movies with an average rating above a certain value Challenging
+
+function getDirectorsWithHighAverageRatings(minAverageRating) {
+    const directorRatings = {};
+
+    movies.forEach(movie => {
+        const averageRating = movie.ratings.reduce((a, b) => a + b, 0) / movie.ratings.length;
+        if (!directorRatings[movie.director]) {
+            directorRatings[movie.director] = {
+                totalRatings: 0,
+                numMovies: 0,
+                averageRating: 0
+            };
+        }
+        directorRatings[movie.director].totalRatings += averageRating;
+        directorRatings[movie.director].numMovies++;
+        directorRatings[movie.director].averageRating = directorRatings[movie.director].totalRatings / directorRatings[movie.director].numMovies;
+    });
+
+    return Object.keys(directorRatings).filter(director => directorRatings[director].averageRating >= minAverageRating);
+}
+
 console.log(getDirectorsWithHighAverageRatings(8.5)); // Should print directors with high average ratings
 
 
@@ -288,3 +470,40 @@ function updateMovieDetails(id, { genre: gen, ratings: rat }) {
 console.log(updateMovieDetails(2, { genre: "Romance", ratings: [10, 9, 8] })); // Should print updated Arjun Reddy
 console.log(updateMovieDetails(6, { genre: "Thriller" })); // Should print: Movie not found
 
+
+// Q39: Update or add a movie based on the id Challenging
+
+
+function updateOrAddMovie(movie) {
+    const index = movies.findIndex(m => m.id === movie.id);
+    if (index === -1) {
+        movies.push(movie);
+        return movies;
+    } else {
+        movies[index] = { ...movies[index], ...movie };
+        return movies;
+    }
+}
+
+console.log(
+    updateOrAddMovie({
+        id: 6,
+        title: "Pushpa",
+        director: "Sukumar",
+        year: 2021,
+        ratings: [8, 9, 8],
+        genre: "Action",
+    })
+);
+// Should add Pushpa to the list
+console.log(
+    updateOrAddMovie({
+        id: 5,
+        title: "Jersey",
+        director: "Gowtam Tinnanuri",
+        year: 2019,
+        ratings: [10, 10, 9],
+        genre: "Sports",
+    })
+);
+// Should update Jersey's ratings in the list
