@@ -14,7 +14,7 @@ console.log(fullName2.apply(student5))
 
 //
 
-const fullName3 = function () {
+const fullName3 = () => {
     return `${this.lastName}, ${this.firstName}`;
 };
 
@@ -39,4 +39,13 @@ const student7 = {
 };
 
 const boundFullName2 = fullName4.bind(student7);
-console.log(boundFullName2()); 
+console.log(boundFullName2());
+
+
+// 1 => => 
+// 2 () () 
+// 3 => () 
+
+// recommended
+
+// () => 
