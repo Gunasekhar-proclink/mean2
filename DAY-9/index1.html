@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Loop</title>
+    <style>
+      body {
+        margin: 0;
+        display: grid;
+        place-content: center;
+        min-height: 100vh;
+        transition: background-color 0.2s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="startButton">▶️</button>
+    <button id="stopButton">⏹️</button>
+    <script>
+      const colors = ["crimson", "plum", "orange", "purple"];
+      let currentIndex = 0;
+      let rocketInterval;
+
+      function start() {
+        document.body.style.backgroundColor = colors[currentIndex];
+        rocketInterval = setInterval(() => {
+          currentIndex = (currentIndex + 1) % colors.length;
+          document.body.style.backgroundColor = colors[currentIndex];
+        }, 2000);
+      }
+
+      function stop() {
+        clearInterval(rocketInterval);
+        currentIndex = 0;
+        document.body.style.backgroundColor = colors[currentIndex];
+      }
+
+      document.getElementById("startButton").addEventListener("click", start);
+      document.getElementById("stopButton").addEventListener("click", stop);
+    </script>
+  </body>
+</html>
