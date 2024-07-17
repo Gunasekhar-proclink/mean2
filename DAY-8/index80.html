@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- <h1>Css is awesome awesome</h1>
+    <h1>This is super fun</h1>
+    <span class="highlight">Phani loves AI </span>
+    <h2 class="fun">Hobbies</h2>
+    <h2 class="fun">Dreams</h2>
+    <p class="fun">Woww</p>
+    <ul class="languages">
+      <li>Css</li>
+      <li>html</li>
+    </ul> -->
+
+    <h3>Hobbies</h3>
+    <ul class="hobbies"></ul>
+
+    <script>
+      //   const headings = document.getElementsByTagName("h1");
+      //   console.log(headings[0].innerText);
+      //   const headings2 = document.getElementsByClassName("highlight");
+      //   console.log(headings2[0].innerText);
+      //   const headings3 = document.getElementsByTagName("p");
+      //   headings3[0].innerText = "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
+
+      //   document.querySelector(".languages").innerText = `<li> CSS </li>
+      //                                                     <li> HTML </li>`;
+
+      //   document.querySelector(".languages").innerHTML = `<li> CSS </li>
+      //                                                     <li> HTML </li> `;
+      //
+      const hobbiesData = [
+        "Reading",
+        "Painting",
+        "Photography",
+        "Hiking",
+        "Gardening",
+        "Cooking",
+        "Playing musical instruments",
+        "Dancing",
+        "Traveling",
+        "Knitting",
+      ];
+      function requiredthings(hobbiesData, a, b) {
+        const vari = hobbiesData.map((x) => {
+          return `${a} ${x} ${b}`;
+        });
+        return vari.join(" ");
+      }
+      document.querySelector(".hobbies").innerHTML = requiredthings(
+        hobbiesData,
+        "<li>",
+        "</li>"
+      );
+    </script>
+  </body>
+</html>

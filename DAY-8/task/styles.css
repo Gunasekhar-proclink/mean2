@@ -1,0 +1,40 @@
+
+  .card-container {
+    border-radius: 15px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: white;
+    overflow: hidden;
+    margin: 20px;
+  }
+  
+  .image {
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+  }
+  
+  .discription {
+    padding: 20px;
+    font-family: sans-serif;
+  }
+  
+  h3 {
+    margin-top: 0;
+  }
+  
+  h5 {
+    margin: 5px 0;
+  }
+  
+  body {
+    background: whitesmoke;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 0;
+  }
