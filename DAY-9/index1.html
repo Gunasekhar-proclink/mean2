@@ -10,34 +10,54 @@
         display: grid;
         place-content: center;
         min-height: 100vh;
-        transition: background-color 0.2s ease;
+        background-size: cover;
+        background-position: center;
+        transition: 0.2s ease;
       }
     </style>
   </head>
   <body>
     <button id="startButton">▶️</button>
     <button id="stopButton">⏹️</button>
+    <button id="pauseButton">⏸️</button>
     <script>
-      const colors = ["crimson", "plum", "orange", "purple"];
+      const colors = [
+        "https://www.fbcoverlover.com/maker/fb/anime-cartoons/family-guy-4-facebook-covers.html",
+        "https://wallpapers.com/images/featured/family-guy-background-j5ot9chu6yso3frz.jpg",
+        "https://www.byronmark.com/wp-content/uploads/2020/05/Simpsons.jpg",
+        "",
+      ];
+      let isPaused = false;
       let currentIndex = 0;
       let rocketInterval;
 
       function start() {
-        document.body.style.backgroundColor = colors[currentIndex];
+        document.body.style.backgroundImage = `url(${colors[currentIndex]})`;
         rocketInterval = setInterval(() => {
           currentIndex = (currentIndex + 1) % colors.length;
-          document.body.style.backgroundColor = colors[currentIndex];
+          document.body.style.backgroundImage = `url(${colors[currentIndex]})`;
         }, 2000);
       }
 
       function stop() {
         clearInterval(rocketInterval);
         currentIndex = 0;
-        document.body.style.backgroundColor = colors[currentIndex];
+        document.body.style.backgroundImage = `url(${colors[currentIndex]})`;
+      }
+
+      function pause() {
+        if (!isPaused) {
+          clearInterval(rocketInterval);
+          isPaused = true;
+        } else {
+          start();
+          isPaused = false;
+        }
       }
 
       document.getElementById("startButton").addEventListener("click", start);
       document.getElementById("stopButton").addEventListener("click", stop);
+      document.getElementById("pauseButton").addEventListener("click", pause);
     </script>
   </body>
 </html>
