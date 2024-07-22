@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding-top: 80px;
+        padding-bottom: 80px;
+      }
+      .container {
+        background: orange;
+        width: 600px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .card {
+        background: whitesmoke;
+        min-height: 100px;
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .image {
+        margin-right: 20px;
+      }
+      img {
+        max-height: 80px;
+        max-width: 80px;
+        border-radius: 50%;
+      }
+      .details {
+        display: flex;
+        flex-direction: column;
+      }
+      .details .name {
+        font-weight: bold;
+        font-size: 1.2em;
+        margin-bottom: 5px;
+      }
+      .details .date {
+        color: grey;
+      }
+      .deleteBtn {
+        height: 20px;
+        width: 80px;
+        background: orange;
+        display: flex;
+        justify-content: center;
+        border-radius: 10px;
+        margin-top: 10px;
+        cursor: pointer;
+      }
+      .deleteBtn:hover {
+        background: red;
+        transform: scale(1.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="userContainer"></div>
+    <script>
+      fetch("https://669a424b9ba098ed61fef5da.mockapi.io/Users")
+        .then((response) => response.json())
+        .then((data) => {
+          const userContainer = document.getElementById("userContainer");
+          data.forEach((user) => {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.setAttribute("data-id", user.id);
+
+            const imageDiv = document.createElement("div");
+            imageDiv.className = "image";
+            const img = document.createElement("img");
+            img.src = user.avatar;
+            img.alt = user.name;
+            imageDiv.appendChild(img);
+
+            const detailsDiv = document.createElement("div");
+            detailsDiv.className = "details";
+
+            const delBtn = document.createElement("button");
+            delBtn.className = "deleteBtn";
+            delBtn.innerHTML = "Delete";
+            delBtn.addEventListener("click", () => deleteUser(user.id, card));
+
+            const name = document.createElement("div");
+            name.className = "name";
+            name.innerText = user.name;
+
+            const date = document.createElement("div");
+            date.className = "date";
+            date.innerText = new Date(user.createdAt).toLocaleDateString();
+
+            detailsDiv.appendChild(name);
+            detailsDiv.appendChild(date);
+            detailsDiv.appendChild(delBtn);
+
+            card.appendChild(imageDiv);
+            card.appendChild(detailsDiv);
+
+            userContainer.appendChild(card);
+          });
+        });
+
+      function deleteUser(userId, cardElement) {
+        fetch(`https://669a424b9ba098ed61fef5da.mockapi.io/Users/${userId}`, {
+          method: "DELETE",
+        }).then((response) => {
+          cardElement.remove();
+        });
+      }
+    </script>
+  </body>
+</html>
+
+has context menu
