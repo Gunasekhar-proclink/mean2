@@ -4,8 +4,44 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        min-width: 100vh;
+        display: grid;
+        justify-content: center;
+        background-color: orange;
+      }
+      .container {
+        height: 150px;
+        width: 350px;
+        display: flex;
+        background-color: white;
+      }
+      .imagecontainer {
+        background: url("https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1059.jpg");
+        background-repeat: no-repeat;
+        height: 100pxpx;
+        width: 100px;
+        border-radius: 50%;
+      }
+
+      .contentcontainer {
+      }
+    </style>
   </head>
   <body>
-    <script src="weather.js"></script>
+    <div class="container">
+      <div class="imagecontainer"></div>
+      <div class="contentcontainer">
+        <h1>Chris</h1>
+        <p>Mon May 20 2024</p>
+      </div>
+    </div>
+    <script src="weather.js">
+              fetch("https://669a424b9ba098ed61fef5da.mockapi.io/Users")
+      .then(res => res.json())
+      .then(data => console.log(data))
+    </script>
   </body>
 </html>
